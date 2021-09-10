@@ -1,0 +1,2 @@
+# PaintPipeline
+OpenPaintResourcer的自动化部署工具
