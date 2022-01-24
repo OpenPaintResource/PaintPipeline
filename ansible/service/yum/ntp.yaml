@@ -1,0 +1,37 @@
+---
+- hosts: all
+  tasks:
+    - name: install ntp.
+      yum: 
+        name: 
+          - ntp
+    - name: start ntp server
+      service:
+        name: ntpd
+        state: started
+    - name: auto run when reboot
+      shell: "systemctl enable ntpd"
+    - name: set timezone to Asia-Shanghai
+      shell: /usr/bin/timedatectl set-timezone Asia/Shanghai
+      tags:
+        - set_timezone
+    - name: remove lines in ntp.conf
+      lineinfile:
+        path: /etc/ntp.conf
+        regexp: '^server'
+        state: absent
+      tags:
+        - remove_ntpconf
+    
+    - name: add ntp servers to ntp.conf
+      lineinfile:
+        path: /etc/ntp.conf
+        regexp: '^server'
+        state: present
+        line: |+
+          server ntp1.aliyun.com prefer
+          server ntp2.aliyun.com
+      tags:
+        - add_new_ntpconf
+    - name: test date
+      shell: "date"
