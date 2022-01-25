@@ -5,6 +5,10 @@
       yum: 
         name: 
           - docker
+    - name: install docker-compose.
+      yum: 
+        name: 
+          - docker-compose
     - name: start docker server
       service:
         name: docker
