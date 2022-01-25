@@ -1,0 +1,15 @@
+---
+- hosts: all
+  tasks:
+    - name: install docker.
+      yum: 
+        name: 
+          - docker
+    - name: start docker server
+      service:
+        name: docker
+        state: started
+    - name: auto run when reboot
+      shell: "systemctl enable docker"
+    - name: test docker command
+      shell: "docker version"
