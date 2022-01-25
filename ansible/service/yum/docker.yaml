@@ -1,14 +1,25 @@
 ---
 - hosts: all
   tasks:
-    - name: install docker.
-      yum: 
-        name: 
-          - docker
     - name: install docker-compose.
       yum: 
         name: 
           - docker-compose
+          - yum-utils
+    - name: install docker latest
+      shell: "yum-config-manager  \
+              --add-repo \
+              https://download.docker.com/linux/centos/docker-ce.repo"
+    - name: yum update
+      shell: "yum-config-manager --enable docker-ce-stable;yum update --skip-broken -y"
+    # - name: remove -y containerd.io docker-ce docker-ce-cli
+    #   shell: "yum remove -y containerd.io docker-ce docker-ce-cli"
+    - name: install containerd.io-1.2.13 docker-ce-19.03.11 docker-ce-cli-19.03.11
+      yum: 
+        name: 
+          - docker-ce-19.03.11
+          - docker-ce-cli-19.03.11
+          - containerd.io-1.2.13
     - name: start docker server
       service:
         name: docker
