@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+    - name: touch a file
+      file:
+        path: /tmp/when.txt
+        state: touch
+      when: >
+        ansible_distribution == 'CentOS'
+    - name: create opts dir
+      file: 
+        path: /opt/{{item}}
+        state: directory
+      loop:
+        - Mysql
+        - Hbase
+        - Hadoop
+        - PaintPipeline
